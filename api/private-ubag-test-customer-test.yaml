@@ -1,0 +1,35 @@
+openapi: 3.0.1
+info:
+  title: API PV UBAG Test Customer Test V1
+  description: Description
+  version: 1.0.0
+servers:
+- url: [SERVER-URL-DEFINIDO-SEGUN-API]
+x-bcp-api-type: PV
+x-bcp-api-id: test-customer-test
+externalDocs:
+  url: [URL-DOCUMENTATION-SEGUN-TIPO-API]
+  description: Mas informacion
+tags:
+- name: Test Customer Test
+  description: Test Customer Test Controller
+paths:
+  /accounts/{accountId}:
+    get:
+      tags:
+      - Test Customer Test
+      summary: Consultar el detalle de una cuenta
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: subscription-key
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
