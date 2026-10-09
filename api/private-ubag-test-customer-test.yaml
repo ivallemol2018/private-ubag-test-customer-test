@@ -1,0 +1,320 @@
+openapi: 3.0.1
+info:
+  title: API PV UBAG Test Customer Test V1
+  description: "[DESCRIPCION_API]"
+  version: 1.0.0
+servers:
+- url: /private-ubag-test-customer-test/v1
+x-bcp-api-type: PV
+x-bcp-api-id: ubag-test-customer-test
+externalDocs:
+  url: [URL-DOCUMENTATION-SEGUN-TIPO-API]
+  description: Mas informacion
+tags:
+- name: Test Customer Test
+  description: Test Customer Test Controller
+paths:
+  /customer/{customerId}:
+    get:
+      tags:
+      - Test Customer Test
+      summary: Consultar el detalle de una cuenta
+      description: '[DESCRIPCION_ENDPOINT]'
+      operationId: getCustomer
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/subscription-key'
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+components:
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+    subscription-key:
+      name: subscription-key
+      in: header
+      required: true
+      schema:
+        type: string
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    InternalServerError:
+      description: El servicio lanzo algun error. Por favor contactarse con soporte Tecnico.
+        Por favor, comuniquese con su administrador.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            internalServerErrorExample:
+              $ref: '#/components/examples/InternalServerErrorExample'
+    GatewayTimeout:
+      description: El tiempo de espera para recibir una respuesta del  backend ha expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            internalServerErrorExample:
+              $ref: '#/components/examples/GatewayTimeoutExample'
+    BadRequest:
+      description: La solicitud enviada no es valida. Por favor revise los parametros
+        o el cuerpo de la peticion.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            badRequestExample:
+              $ref: '#/components/examples/BadRequestExample'
+    Unauthorized:
+      description: No se pudo autenticar la solicitud. Por favor verifique las credenciales
+        proporcionadas.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            unauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: No cuenta con los permisos necesarios para acceder a este recurso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            forbiddenExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: El recurso solicitado no fue encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            notFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    TooManyRequests:
+      description: Se supero el limite de solicitudes permitidas. Por favor intente nuevamente
+        mas tarde.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            tooManyRequestsExample:
+              $ref: '#/components/examples/TooManyRequestsExample'
+    ServiceUnavailable:
+      description: El servicio no se encuentra disponible en este momento. Por favor intente
+        nuevamente mas tarde.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiException'
+          examples:
+            serviceUnavailableExample:
+              $ref: '#/components/examples/ServiceUnavailableExample'
+  examples:
+    InternalServerErrorExample:
+      summary: Error interno
+      value:
+        code: ER0006
+        description: Error interno del servidor
+        errorType: Technical
+        errorDetail:
+        - code: TL005
+          description: Fallo en servicio backend
+          path: backend.service
+          url: http://documentacion-to-fix-error.com/internal-error
+    GatewayTimeoutExample:
+      summary: Timeout backend
+      value:
+        code: ER0007
+        description: Tiempo de espera excedido
+        errorType: Technical
+        errorDetail:
+        - code: TL0006
+          description: Timeout en integracion externa
+          path: backend.timeout
+          url: http://documentacion-to-fix-error.com/internal-error
+    BadRequestExample:
+      summary: Solicitud invalida
+      value:
+        code: ER0001
+        description: Solicitud invalida
+        errorType: Functional
+        errorDetail:
+        - code: TL001
+          description: Error de validacion en el request
+          path: request.body
+          url: http://documentacion-to-fix-error.com/bad-request
+    UnauthorizedExample:
+      summary: No autorizado
+      value:
+        code: ER0002
+        description: No autorizado
+        errorType: Functional
+        errorDetail:
+        - code: TL002
+          description: Error de autenticacion
+          path: request.headers.Authorization
+          url: http://documentacion-to-fix-error.com/unauthorized
+    ForbiddenExample:
+      summary: Acceso denegado
+      value:
+        code: ER0003
+        description: Acceso denegado
+        errorType: Functional
+        errorDetail:
+        - code: TL003
+          description: Error de autorizacion
+          path: request.permissions
+          url: http://documentacion-to-fix-error.com/forbidden
+    NotFoundExample:
+      summary: Recurso no encontrado
+      value:
+        code: ER0004
+        description: Recurso no encontrado
+        errorType: Functional
+        errorDetail:
+        - code: TL004
+          description: Recurso no encontrado
+          path: request.resource
+          url: http://documentacion-to-fix-error.com/not-found
+    TooManyRequestsExample:
+      summary: Limite de solicitudes excedido
+      value:
+        code: ER0005
+        description: Limite de solicitudes excedido
+        errorType: Technical
+        errorDetail:
+        - code: TL007
+          description: Limite de solicitudes excedido
+          path: request.rateLimit
+          url: http://documentacion-to-fix-error.com/too-many-requests
+    ServiceUnavailableExample:
+      summary: Servicio no disponible
+      value:
+        code: ER0008
+        description: Servicio no disponible
+        errorType: Technical
+        errorDetail:
+        - code: TL008
+          description: Servicio no disponible temporalmente
+          path: backend.service
+          url: http://documentacion-to-fix-error.com/service-unavailable
+  schemas:
+    Code:
+      type: string
+      title: Code
+      description: Codigo de error de alto, nivel, es el 2do nivel de detalle de un error,
+        se basa en el http code devuelto.El formato es ERXXXX, donde XXXX es el numero
+        de error.
+      maxLength: 6
+      example: ER0007
+    ErrorType:
+      type: string
+      title: ErrorType
+      enum:
+      - Functional
+      - Technical
+      description: "Tipo de error:\n- Functional - Error devuelto por una validacion o\
+        \ regla de \nnegocio no superada\n- Techical - Error devuelto por la herramienta\
+        \ o sistema,\ngeneralmente causado por problemas tecnicos o dependencias externas.\n"
+      example: Functional
+    Description:
+      type: string
+      title: Description
+      description: Descripcion del mensaje de error, alto nivel.
+      maxLength: 500
+      example: Error al llamar al servicio
+    Path:
+      type: string
+      title: Path
+      maxLength: 200
+      description: Referencia al path del Json involucrado en el error, aqui se indica
+        que objecto del request, response o parametro de consulta es el involucrado con
+        el error
+      example: Party.partyIdentification.IdentifierValue
+    Url:
+      type: string
+      title: Url
+      maxLength: 200
+      description: Ubicacion de la documentacion para soporte del problema.
+      example: https://documentation-to-fix-error.com/como-consultar-datos-usuario-info
+    ApiExceptionDetail:
+      type: object
+      title: ApiExceptionDetail
+      description: Contiene la lista de detalles para mayor detalle del error originado
+      example:
+        code: TL0001
+        description: Error al llamar al servicio
+        path: Party.partyIdentification.IdentifierValue
+        url: https://documentacion-to-fix-error.com/como-consultar-datos-usuario-info
+      properties:
+        code:
+          $ref: '#/components/schemas/Code'
+        description:
+          $ref: '#/components/schemas/Description'
+        path:
+          $ref: '#/components/schemas/Path'
+        url:
+          $ref: '#/components/schemas/Url'
+        errorDetail:
+          type: array
+          description: Contiene la lista de detalles para mayor detalle del error originado
+          items:
+            $ref: '#/components/schemas/ApiExceptionDetail'
+    ApiException:
+      type: object
+      title: ApiException
+      description: El servicio no recibio una respuesta oportuna de la aplicacion
+      example:
+        code: ER0007
+        description: Error al llamar al servicio
+        errorType: Functional
+        exceptionalDetails:
+        - code: TL001
+          description: Error al llamar al servicio
+          path: Party.part
+          url: https://documentation-to-fix-error.com/como-consultar-datos-usuario-info
+      properties:
+        code:
+          $ref: '#/components/schemas/Code'
+        errorType:
+          $ref: '#/components/schemas/ErrorType'
+        description:
+          $ref: '#/components/schemas/Description'
+        errorDetail:
+          type: array
+          description: Contiene la lista de detalles para mayor detalle del error originado
+          items:
+            $ref: '#/components/schemas/ApiExceptionDetail'
